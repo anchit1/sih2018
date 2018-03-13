@@ -1,8 +1,5 @@
-from flask import Flask, render_template, send_from_directory
-import os
-
-serve_dir = os.path.abspath('../public')
-app = Flask(__name__, template_folder=serve_dir, static_folder=serve_dir)
+from app import app
+from flask import render_template, send_from_directory
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
