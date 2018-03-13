@@ -8,12 +8,17 @@ export default class SignUpForm extends React.Component {
 	}
 
 	state = {
-		emailError: false
+		emailError: false,
+		passwordMatchError: false,
+		passwordBlankError: false,
+		firstNameBlankError: false,
+		lastNameBlankError: false
 	}
 
 	onSubmit = (e) => {
 		e.preventDefault();
-
+		
+		// form validation
 		const email = e.target.email.value;
 		if (validate(email) == false) {
 			this.setState(() => ({ emailError: true}));
@@ -21,8 +26,24 @@ export default class SignUpForm extends React.Component {
 		} else {
 			this.setState(() => ({ emailError: false }))
 		}
+		
+		const password = e.target.password.value;
+		const password_confirm = e.target.password_confirm.value;
 
+		if (password_confirm != password) {
+			this.setState(() => ({ passwordMatchError: true }));
+		}
 
+		// check if the password is blank
+		this.setState(() => ({
+			passwordBlankError: password === '' || password_confirm === ''
+		}));
+
+		const first_name = e.target.first_name.value;
+		const last_name = e.target.last_name.value;
+		this.setState(() => ({ firstNameBlankError: first_name === ''}));
+		this.setState(() => ({ lastNameBlankError: last_name === ''}));
+		
 	}
 
 	render = () => (
@@ -39,8 +60,17 @@ export default class SignUpForm extends React.Component {
 						<Form onSubmit={ this.onSubmit }>
 
 							<Form.Group widths='equal'>
-								<Form.Input fluid label='First name' placeholder='First name' />
-								<Form.Input fluid label='Last name' placeholder='Last name' />
+								<Form.Input 
+									fluid label='First name' 
+									placeholder='First name'
+									name='first_name'
+									error={ this.state.firstNameBlankError } />
+								<Form.Input 
+									fluid 
+									label='Last name' 
+									placeholder='Last name'
+									name='last_name'
+									error={ this.state.lastNameBlankError } />
 							</Form.Group>
 							
 							<Form.Field>
@@ -59,7 +89,10 @@ export default class SignUpForm extends React.Component {
 									fluid 
 									label='Password' 
 									placeholder='Password'
-									type='password' />
+									type='password'
+									name='password'
+									error={ this.state.passwordMatchError}
+									error={ this.state.passwordBlankError} />
 							</Form.Field>
 
 							<Form.Field>
@@ -67,7 +100,10 @@ export default class SignUpForm extends React.Component {
 									fluid 
 									label='Confirm password' 
 									placeholder='Password'
-									type='password' />
+									type='password'
+									name='password_confirm'
+									error={ this.state.passwordMatchError}
+									error={ this.state.passwordBlankError} />
 							</Form.Field>
 							
 							<Button color='teal' fluid>Signup</Button>
