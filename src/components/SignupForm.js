@@ -1,9 +1,28 @@
 import React from 'react';
 import { Segment, Form, Divider, Grid, Header, Button } from 'semantic-ui-react';
+import { validate } from 'email-validator';
 
 export default class SignUpForm extends React.Component {
 	constructor(props) {
 		super(props);
+	}
+
+	state = {
+		emailError: false
+	}
+
+	onSubmit = (e) => {
+		e.preventDefault();
+
+		const email = e.target.email.value;
+		if (validate(email) == false) {
+			this.setState(() => ({ emailError: true}));
+			console.log('invalid email.');
+		} else {
+			this.setState(() => ({ emailError: false }))
+		}
+
+
 	}
 
 	render = () => (
@@ -17,7 +36,7 @@ export default class SignUpForm extends React.Component {
 					<Header as='h2' color='teal'>Create a new account</Header>
 					
 					<Segment padded='very'>
-						<Form>
+						<Form onSubmit={ this.onSubmit }>
 
 							<Form.Group widths='equal'>
 								<Form.Input fluid label='First name' placeholder='First name' />
@@ -30,7 +49,9 @@ export default class SignUpForm extends React.Component {
 									label='Email' 
 									placeholder='email'
 									icon='mail'
-									iconPosition='left' />
+									iconPosition='left'
+									name='email'
+									error={ this.state.emailError } />
 							</Form.Field>
 
 							<Form.Field>

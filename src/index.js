@@ -7,8 +7,4 @@ import AppRouter from './router/AppRouter';
 import 'semantic-ui-css/semantic.min.css';
 import './style/style.scss';
 
-const str = (
-  <Button />
-);
-
 ReactDOM.render(<AppRouter />, document.getElementById('app'));
