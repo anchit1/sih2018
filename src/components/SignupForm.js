@@ -15,11 +15,12 @@ export default class SignUpForm extends React.Component {
 		lastNameBlankError: false
 	}
 
-	onSubmit = (e) => {
-		e.preventDefault();
-		
+	onSubmit = (f) => {
+		// e.preventDefault();
+		// console.log(document.forms['signupForm'].elements['first_name'].value)
+		const form = document.forms['signupForm'];
 		// form validation
-		const email = e.target.email.value;
+		const email = form.elements['email'].value;
 		if (validate(email) == false) {
 			this.setState(() => ({ emailError: true}));
 			console.log('invalid email.');
@@ -27,8 +28,8 @@ export default class SignUpForm extends React.Component {
 			this.setState(() => ({ emailError: false }))
 		}
 		
-		const password = e.target.password.value;
-		const password_confirm = e.target.password_confirm.value;
+		const password = form.elements['password'].value;
+		const password_confirm = form.elements['password_confirm'].value;
 
 		if (password_confirm != password) {
 			this.setState(() => ({ passwordMatchError: true }));
@@ -39,25 +40,42 @@ export default class SignUpForm extends React.Component {
 			passwordBlankError: password === '' || password_confirm === ''
 		}));
 
-		const first_name = e.target.first_name.value;
-		const last_name = e.target.last_name.value;
+		const first_name = form.elements['first_name'].value;
+		const last_name = form.elements['last_name'].value;
 		this.setState(() => ({ firstNameBlankError: first_name === ''}));
 		this.setState(() => ({ lastNameBlankError: last_name === ''}));
-		
+
+		const data = { 'name': first_name }
+
+		fetch('/api/ajax', {
+			body: JSON.stringify(data), // must match 'Content-Type' header
+			cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+			credentials: 'same-origin', // include, same-origin, *omit
+			headers: {
+				'user-agent': 'Mozilla/4.0 MDN Example',
+				'content-type': 'application/json'
+			},
+			method: 'POST', // *GET, POST, PUT, DELETE, etc.
+			mode: 'cors', // no-cors, cors, *same-origin
+			redirect: 'follow', // *manual, follow, error
+			referrer: 'no-referrer', // *client, no-referrer
+		}).then( response => response.json() )
+		.then( resData => { console.log(resData)});
 	}
 
 	render = () => (
 		<div className="signup-form">
 			<Grid
 				verticalAlign="middle"
-				centered={true}
+				textAlign='left'
+				centered	
 			>
-				<Grid.Column style={{ maxWidth: 450 }}>
+				<Grid.Column style={{ maxWidth: 420 }} floated='middle'>
 
 					<Header as='h2' color='teal'>Create a new account</Header>
 					
 					<Segment padded='very'>
-						<Form onSubmit={ this.onSubmit }>
+						<Form onSubmit={ this.onSubmit } name='signupForm'>
 
 							<Form.Group widths='equal'>
 								<Form.Input 
@@ -106,8 +124,16 @@ export default class SignUpForm extends React.Component {
 									error={ this.state.passwordBlankError} />
 							</Form.Field>
 							
-							<Button color='teal' fluid>Signup</Button>
 						</Form>
+						<Button 
+							color='teal' 
+							fluid 
+							style={{ marginTop: '1em'}}
+							onClick={ this.onSubmit }	>
+								Signup
+						</Button>
+
+
 					</Segment>
 				</Grid.Column>
 			</Grid>

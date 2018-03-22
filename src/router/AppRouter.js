@@ -4,16 +4,20 @@ import SignupForm from '../components/SignupForm';
 import AppHeader from '../components/AppHeader';
 import HelpPage from '../components/HelpPage';
 import TestForm from '../components/TestForm';
+import HomePage from '../components/HomePage';
+import MainContent from '../components/MainContent';
 
 const AppRouter = () => (
   <BrowserRouter>
     <div>
       <AppHeader />
-      <Switch>
-        <Route path='/' component={ SignupForm } exact={true} />
-        <Route path='/test' component={ TestForm } />
-        <Route path='/help' component={ HelpPage } />
-      </Switch>
+      <div style={{ marginTop: 76 }}>
+        <Switch>
+          <Route path='/' component={ HomePage } exact={true} />
+          <Route path='/test' component={ TestForm } />
+          <Route path='/help' component={ HelpPage } />
+        </Switch>
+      </div>
     </div>
   </BrowserRouter>
 );

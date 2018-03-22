@@ -8,7 +8,7 @@ export default () => (
 			fixed='top'
 			borderless={true}
 			inverted={true}
-			size='large'
+			size='small'
 		>
 			<Container>
 				<Menu.Item header as='h2'>
@@ -18,7 +18,7 @@ export default () => (
 					<Button>Sign up</Button>
 				</Menu.Item>			
 				<Menu.Item>
-					<Button color='green' size='tiny'>Log in</Button>
+					<Button color='teal' size='tiny'>Log in</Button>
 				</Menu.Item>
 			</Container>
 		</Menu>
